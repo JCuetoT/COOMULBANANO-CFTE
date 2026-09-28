@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COOMULBANANO CFTE — Balance de Gestión Estratégica 2026</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js para modelado financiero y analítico -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Iconos Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700;800&family=Source+Serif+4:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Source Sans 3', 'ui-sans-serif', 'sans-serif'],
+            display: ['Source Serif 4', 'Georgia', 'serif'],
+            mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+          },
+          colors: {
+            brand: {
+              navy: '#0B2E59',
+              navydeep: '#082142',
+              blue: '#0072CE',
+              sky: '#3DA5D9',
+              skysoft: '#EAF3FC',
+              bg: '#F4F7FB',
+              line: '#D9E4F0',
+              gold: '#C9A227',
+              goldsoft: '#FBF6E7',
+              green: '#4C9F38',
+              greensoft: '#E9F5E4',
+              amber: '#DDA63A',
+              red: '#E5243B',
+              redsoft: '#FDEBEC',
+              ink: '#1F2D3D',
+              soft: '#52657A'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Estructura adaptativa de pantalla con alta legibilidad tipográfica */
+    html, body {
+      height: 100vh;
+      max-height: 100vh;
+      overflow: hidden;
+      background-color: #F4F7FB;
+      color: #1F2D3D;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 16px; /* Tamaño base garantizado */
+    }
+
+    .panel {
+      background: #FFFFFF;
+      border: 1.5px solid #D9E4F0;
+      border-radius: 0.85rem;
+      box-shadow: 0 2px 4px rgba(11, 46, 89, 0.05), 0 10px 24px -10px rgba(11, 46, 89, 0.09);
+    }
+
+    .instit-line {
+      background: linear-gradient(90deg, #0072CE, #3DA5D9);
+    }
+
+    .slide-page {
+      display: none;
+      height: 100%;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .slide-page.active {
+      display: flex;
+      flex-direction: column;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #B9CBE0; border-radius: 3px; }
+  </style>
+</head>
+
+<body class="h-screen flex flex-col justify-between select-none bg-brand-bg relative text-base">
+
+  <!-- ============================================================== -->
+  <!-- BARRA DE CONTROL SUPERIOR (DESCONGESTIONADA Y LEGIBLE)         -->
+  <!-- ============================================================== -->
+  <header class="w-full bg-white border-b-2 border-brand-line px-5 py-2.5 flex items-center justify-between flex-shrink-0 z-40 shadow-sm">
+
+    <!-- Branding Institucional -->
+    <div class="flex items-center gap-3.5 flex-shrink-0">
+      <div class="h-11 w-11 rounded-xl bg-brand-navy border-2 border-brand-gold flex items-center justify-center shadow-sm">
+        <span class="text-white font-display font-extrabold text-base tracking-tight">CFTE</span>
+      </div>
+      <div class="hidden sm:block">
+        <div class="flex items-center gap-2">
+          <span class="text-sm font-bold tracking-wide text-brand-navy uppercase">COOMULBANANO</span>
+          <span class="px-2 py-0.5 rounded text-xs font-mono bg-brand-skysoft text-brand-blue border border-brand-line font-bold">2026</span>
+        </div>
+        <h1 class="text-sm font-display font-bold text-brand-ink leading-tight">
+          
+        </h1>
+      </div>
+    </div>
+
+    <!-- Navegación Ejecutiva Ampliada -->
+    <div class="flex items-center gap-2 bg-brand-bg border border-brand-line rounded-xl p-1.5 shadow-inner">
+      <button onclick="prevSlide()" title="Diapositiva Anterior (←)" class="h-8 w-8 rounded-lg bg-white border border-brand-line text-brand-navy hover:bg-brand-skysoft transition-all flex items-center justify-center shadow-sm active:scale-95">
+        <i class="fa-solid fa-chevron-left text-sm"></i>
+      </button>
+
+      <!-- Selector de Diapositivas -->
+      <div class="relative">
+        <button onclick="toggleIndexMenu()" id="slideSelectorBtn" class="px-3.5 py-1.5 rounded-lg bg-white border border-brand-line hover:border-brand-blue text-sm font-mono font-bold text-brand-navy flex items-center gap-2.5 shadow-sm transition-all">
+          <span id="slideCurrentBadge" class="text-brand-blue font-extrabold">01 / 10</span>
+          <span id="slideCurrentTitle" class="truncate max-w-[160px] md:max-w-[260px] font-sans font-bold text-brand-ink">Portada</span>
+          <i class="fa-solid fa-chevron-down text-xs text-brand-soft"></i>
+        </button>
+
+        <!-- Menú Desplegable -->
+        <div id="indexDropdown" class="hidden absolute top-full left-0 mt-1.5 w-72 bg-white border-2 border-brand-blue rounded-xl shadow-2xl z-50 p-2 space-y-1">
+          <div class="px-3 py-1.5 text-xs font-mono font-bold text-brand-soft uppercase tracking-wider border-b border-brand-line mb-1">Índice de Contenido</div>
+          <button onclick="goToSlide(1); toggleIndexMenu()" class="w-full text-left px-3 py-2 rounded-lg text-sm hover:bg-brand-skysoft font-semibold text-brand-ink flex items-center gap-2.5">
+            <span class="font-mono text-brand-blue font-bold">01</span> Portada Institucional
+          </button>
+          <button onclick="goToSlide(2); toggleIndexMenu()" class="w-full text-left px-3 py-2 rounded-lg text-sm hover:bg-brand-skysoft font-semibold text-brand-ink flex items-center gap-2.5">
+            <span class="font-mono text-brand-blue font-bold">02</span> KPIs de Formación
+          </button>
+          <button onclick="goToSlide(3); toggleIndexMenu()" class="w-full text-left px-3 py-2 rounded-lg text-sm hover:bg-brand-skysoft font-semibold text-brand-ink flex items-center gap-2.5">
+            <span class="font-mono text-brand-blue font-bold">03</span> Apalancamiento &amp; SROI
+          </button>
+          <button onclick="goToSlide(4); toggleIndexMenu()" class="w-full text-left px-3 py-2 rounded-lg text-sm hover:bg-brand-skysoft font-semibold text-brand-ink flex items-center gap-2.5">
+            <span class="font-mono text-brand-green font-bold">04</span> Proyecto FENOCO
+          </button>
+          <button onclick="goToSlide(5); toggleIndexMenu()" class="w-full text-left px-3 py-2 rounded-lg text-sm hover:bg-brand-skysoft font-semibold text-brand-ink flex items-center gap-2.5">
+            <span class="font-mono text-brand-amber font-bold">05</span> Sabores que Inspira
+          </button>
+          <button onclick="goToSlide(6); toggleIndexMenu()" class="w-full text-left px-3 py-2 rounded-lg text-sm hover:bg-brand-skysoft font-semibold text-brand-ink flex items-center gap-2.5">
+            <span class="font-mono text-brand-blue font-bold">06</span> Transformación Digital
+          </button>
+          <button onclick="goToSlide(7); toggleIndexMenu()" class="w-full text-left px-3 py-2 rounded-lg text-sm hover:bg-brand-skysoft font-semibold text-brand-ink flex items-center gap-2.5">
+            <span class="font-mono text-brand-amber font-bold">07</span> Proyecto Verse Bien
+          </button>
+          <button onclick="goToSlide(8); toggleIndexMenu()" class="w-full text-left px-3 py-2 rounded-lg text-sm hover:bg-brand-skysoft font-semibold text-brand-ink flex items-center gap-2.5">
+            <span class="font-mono text-brand-red font-bold">08</span> Convenio UniMagdalena
+          </button>
+          <button onclick="goToSlide(9); toggleIndexMenu()" class="w-full text-left px-3 py-2 rounded-lg text-sm hover:bg-brand-skysoft font-semibold text-brand-ink flex items-center gap-2.5">
+            <span class="font-mono text-brand-navy font-bold">09</span> Matriz de Resoluciones
+          </button>
+          <button onclick="goToSlide(10); toggleIndexMenu()" class="w-full text-left px-3 py-2 rounded-lg text-sm hover:bg-brand-skysoft font-semibold text-brand-ink flex items-center gap-2.5">
+            <span class="font-mono text-brand-gold font-bold">10</span> Cierre &amp; Balance
+          </button>
+        </div>
+      </div>
+
+      <button onclick="nextSlide()" title="Diapositiva Siguiente (→)" class="h-8 w-8 rounded-lg bg-white border border-brand-line text-brand-navy hover:bg-brand-skysoft transition-all flex items-center justify-center shadow-sm active:scale-95">
+        <i class="fa-solid fa-chevron-right text-sm"></i>
+      </button>
+    </div>
+
+  </header>
+
+  <!-- ============================================================== -->
+  <!-- CONTENEDOR PRINCIPAL                                           -->
+  <!-- ============================================================== -->
+  <main class="flex-1 min-h-0 w-full p-3 lg:p-4 overflow-hidden relative">
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 1: PORTADA INSTITUCIONAL                               -->
+    <!-- ============================================================ -->
+    <section id="slide1" class="slide-page active p-1">
+      <div class="flex-1 rounded-2xl bg-brand-navy relative overflow-hidden flex flex-col items-center justify-center text-center px-6 lg:px-12">
+        <div class="absolute inset-0" style="background: radial-gradient(circle at 50% 25%, rgba(61,165,217,0.25) 0%, transparent 70%);"></div>
+        <div class="absolute bottom-0 left-0 right-0 h-2.5 instit-line"></div>
+
+        <div class="relative flex flex-col items-center max-w-4xl">
+          <span class="px-4 py-1.5 rounded-full border border-white/30 bg-white/10 text-white font-mono text-sm uppercase tracking-wider mb-5 font-semibold">
+            Junta Directiva · trimestre 3 - 2026
+          </span>
+
+          <h2 class="text-5xl xl:text-6xl font-display font-extrabold text-white leading-tight tracking-tight">COOMULBANANO</h2>
+          <p class="text-xl xl:text-2xl text-brand-sky mt-2 font-semibold">Centro de Formación para el Trabajo y el Emprendimiento (CFTE)</p>
+
+          <div class="w-24 h-1.5 instit-line rounded-full my-5"></div>
+
+          <h1 class="text-3xl xl:text-4xl font-display font-bold text-white leading-snug">
+            Balance de Gestión Estratégica e Impacto Territorial
+          </h1>
+
+          <!-- Tarjeta Macro -->
+          <div class="mt-6 px-8 py-4 rounded-2xl bg-white/10 border-2 border-brand-gold/80 backdrop-blur-md flex items-center gap-5 shadow-2xl">
+            <div class="h-12 w-12 rounded-xl bg-brand-gold text-brand-navy flex items-center justify-center font-bold text-2xl flex-shrink-0 shadow-md">
+              <i class="fa-solid fa-coins"></i>
+            </div>
+            <div class="text-left">
+              <div class="text-3xl xl:text-4xl font-mono font-extrabold text-brand-gold leading-none"> $ 2.265.898.258 </div>
+              <p class="text-base text-white mt-1 font-sans font-medium">Valor Social Neto Devuelto a la Comunidad Bananera</p>
+            </div>
+          </div>
+
+          <p class="text-sm font-mono text-white/70 mt-6 tracking-wide uppercase font-semibold">
+            DIRECCIÓN TÉCNICA · DOCUMENTO INSTITUCIONAL DE RENDICIÓN DE CUENTAS
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 2: KPIs DE FORMACIÓN & DESGLOSE INTERACTIVO            -->
+    <!-- ============================================================ -->
+    <section id="slide2" class="slide-page gap-3 p-1">
+
+      <!-- Fila 1: Tarjetas Métricas -->
+      <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 flex-shrink-0">
+
+        <div class="panel rounded-xl p-3 border-t-4 border-t-brand-blue flex flex-col justify-between">
+          <div class="flex justify-between items-center text-sm font-mono text-brand-soft font-bold">
+            <span>KPI CONVENIO</span>
+            <i class="fa-solid fa-bullseye text-brand-blue text-base"></i>
+          </div>
+          <div class="my-1.5 flex items-baseline gap-1.5">
+            <span class="text-3xl xl:text-4xl font-mono font-extrabold text-brand-navy">250</span>
+            <span class="text-sm text-brand-soft font-bold">cupos</span>
+          </div>
+          <div class="text-xs font-mono text-brand-blue font-bold">Base institucional</div>
+        </div>
+
+        <div class="panel rounded-xl p-3 border-t-4 border-t-brand-sky flex flex-col justify-between">
+          <div class="flex justify-between items-center text-sm font-mono text-brand-soft font-bold">
+            <span>KPI INTERNO</span>
+            <i class="fa-solid fa-handshake text-brand-sky text-base"></i>
+          </div>
+          <div class="my-1.5 flex items-baseline gap-1.5">
+            <span class="text-3xl xl:text-4xl font-mono font-extrabold text-brand-navy">700</span>
+            <span class="text-sm text-brand-soft font-bold">cupos</span>
+          </div>
+          <div class="text-xs font-mono text-brand-sky font-bold">CFTE</div>
+        </div>
+
+        <div class="panel rounded-xl p-3 border-t-4 border-t-brand-green bg-[#F6FBF3] flex flex-col justify-between">
+          <div class="flex justify-between items-center text-sm font-mono text-brand-green font-extrabold">
+            <span>LOGRO CONSOLIDADO</span>
+            <i class="fa-solid fa-check-double text-brand-green text-base"></i>
+          </div>
+          <div class="my-1.5 flex items-baseline gap-1.5">
+            <span class="text-3xl xl:text-4xl font-mono font-extrabold text-brand-green">+719</span>
+            <span class="text-sm text-brand-green font-extrabold">cupos</span>
+          </div>
+          <div class="text-xs font-mono text-brand-ink font-bold">102% Meta Propia</div>
+        </div>
+
+        <div class="panel rounded-xl p-3 border-t-4 border-t-brand-blue flex flex-col justify-between">
+          <div class="flex justify-between items-center text-sm font-mono text-brand-soft font-bold">
+            <span>TITULADA (TÉCNICOS)</span>
+            <span class="text-xs px-2 py-0.5 bg-brand-skysoft text-brand-blue rounded font-mono font-extrabold">10%</span>
+          </div>
+          <div class="my-1.5 flex items-baseline gap-1.5">
+            <span class="text-3xl xl:text-4xl font-mono font-extrabold text-brand-navy">119</span>
+            <span class="text-sm text-brand-soft font-bold">técnicos</span>
+          </div>
+          <div class="text-xs text-brand-soft font-mono font-bold">Alta empleabilidad</div>
+        </div>
+
+        <div class="panel rounded-xl p-3 border-t-4 border-t-brand-green flex flex-col justify-between">
+          <div class="flex justify-between items-center text-sm font-mono text-brand-soft font-bold">
+            <span>COMPLEMENTARIA</span>
+            <span class="text-xs px-2 py-0.5 bg-[#E9F5E4] text-brand-green rounded font-mono font-extrabold">90%</span>
+          </div>
+          <div class="my-1.5 flex items-baseline gap-1.5">
+            <span class="text-3xl xl:text-4xl font-mono font-extrabold text-brand-navy">602</span>
+            <span class="text-sm text-brand-soft font-bold">cupos</span>
+          </div>
+          <div class="text-xs text-brand-soft font-mono font-bold">Actualización corta</div>
+        </div>
+
+        <div class="panel rounded-xl p-3 border-t-4 border-t-brand-amber flex flex-col justify-between">
+          <div class="flex justify-between items-center text-sm font-mono text-brand-soft font-bold">
+            <span>COSTO / ALUMNO</span>
+            <i class="fa-solid fa-coins text-brand-amber text-base"></i>
+          </div>
+          <div class="my-1.5 flex items-baseline gap-1">
+            <span class="text-2xl xl:text-3xl font-mono font-extrabold text-brand-amber">$187.76K</span>
+            <span class="text-xs text-brand-soft font-bold">COP</span>
+          </div>
+          <div class="text-xs text-brand-green font-mono font-bold">Eficiencia de gasto</div>
+        </div>
+
+      </div>
+
+      <!-- Fila 2: Gráficas -->
+      <div class="grid grid-cols-1 xl:grid-cols-12 gap-3 flex-1 min-h-0">
+
+        <!-- Gráfica Barras -->
+        <div class="xl:col-span-8 panel p-4 flex flex-col justify-between min-h-0">
+
+          <div class="flex items-center justify-between pb-2 border-b border-brand-line flex-shrink-0 gap-2">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-mono uppercase tracking-wider text-brand-blue font-extrabold">Modelo de Cumplimiento</span>
+              <h3 class="text-lg font-bold text-brand-navy">Metas Planificadas vs Logro Efectivo</h3>
+              <span id="slide2Badge" class="hidden sm:inline text-xs font-mono px-2.5 py-0.5 rounded bg-brand-bg text-brand-soft border border-brand-line font-bold">
+                Vista Agrupada (+700)
+              </span>
+            </div>
+
+            <button id="btnBreakdown" onclick="toggleLogroDrilldown()" class="px-3.5 py-1.5 rounded-lg text-sm font-bold bg-brand-blue hover:bg-brand-navy text-white flex items-center gap-2 shadow-sm transition-all active:scale-95">
+              <i id="btnBreakdownIcon" class="fa-solid fa-diagram-next text-sm"></i>
+              <span id="btnBreakdownText">Clic: Desglosar</span>
+            </button>
+          </div>
+
+          <div class="flex-1 min-h-0 w-full relative py-2">
+            <canvas id="chartKpis"></canvas>
+          </div>
+
+        </div>
+
+        <!-- Gráfica Donut -->
+        <div class="xl:col-span-4 panel p-4 flex flex-col justify-between min-h-0">
+
+          <div class="flex items-center justify-between pb-2 border-b border-brand-line flex-shrink-0">
+            <span class="text-sm font-mono uppercase tracking-wider text-brand-soft font-extrabold">Estructura del Logro</span>
+            <span class="text-sm font-mono text-brand-blue font-extrabold">Proporción 20% / 80%</span>
+          </div>
+
+          <div class="flex-1 min-h-0 w-full relative py-1 flex items-center justify-center">
+            <canvas id="chartDonutLogros"></canvas>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 3: APALANCAMIENTO FINANCIERO Y SROI                    -->
+    <!-- ============================================================ -->
+    <section id="slide3" class="slide-page gap-3 p-1">
+
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 flex-shrink-0">
+
+        <div class="panel p-3.5 border-l-4 border-l-brand-blue flex flex-col justify-between">
+          <div class="flex items-center justify-between text-sm font-mono text-brand-soft font-bold">
+            <span>INVERSIÓN CFTE</span>
+            <i class="fa-solid fa-building-columns text-brand-blue text-base"></i>
+          </div>
+          <div class="my-1">
+            <span class="text-3xl xl:text-4xl font-mono font-extrabold text-brand-navy">~$135M</span>
+            <span class="text-sm font-mono text-brand-soft font-bold"> COP</span>
+          </div>
+          <p class="text-sm text-brand-soft font-medium">Contrapartida directa ejecutada por el centro.</p>
+        </div>
+
+        <div class="panel p-3.5 border-l-4 border-l-brand-sky bg-brand-skysoft/40 flex flex-col justify-between">
+          <div class="flex items-center justify-between text-sm font-mono text-brand-navy font-bold">
+            <span>INVERSIÓN MULTIACTOR</span>
+            <i class="fa-solid fa-handshake-angle text-brand-blue text-base"></i>
+          </div>
+          <div class="my-1">
+            <span class="text-3xl xl:text-4xl font-mono font-extrabold text-brand-blue">Sin dato</span>
+            <span class="text-sm font-mono text-brand-navy font-bold"> COP</span>
+          </div>
+          <p class="text-sm text-brand-ink font-medium">Suma total de aportes: Aliados + CFTE + SENA.</p>
+        </div>
+
+        <div class="panel p-3.5 border-l-4 border-l-brand-green bg-[#F6FBF3] flex flex-col justify-between">
+          <div class="flex items-center justify-between text-sm font-mono text-brand-green font-extrabold">
+            <span>AHORRO SOCIAL</span>
+            <i class="fa-solid fa-heart-pulse text-brand-green text-base"></i>
+          </div>
+          <div class="my-1">
+            <span class="text-3xl xl:text-4xl font-mono font-extrabold text-brand-green">$2.265,8M</span>
+            <span class="text-sm font-mono text-brand-green font-bold"> COP</span>
+          </div>
+          <p class="text-sm text-brand-ink font-medium">Valor monetizado transferido a la región.</p>
+        </div>
+
+        <div class="panel p-3.5 border-l-4 border-l-brand-amber flex flex-col justify-between">
+          <div class="flex items-center justify-between text-sm font-mono text-brand-soft font-bold">
+            <span>RATIO SROI VIGENTE</span>
+            <i class="fa-solid fa-arrow-trend-up text-brand-amber text-base"></i>
+          </div>
+          <div class="my-1 flex items-baseline gap-2">
+            <span class="text-3xl xl:text-4xl font-mono font-extrabold text-brand-amber">14.7 : 1</span>
+            <span class="text-sm font-mono text-brand-green font-extrabold">86.5%</span>
+          </div>
+          <p class="text-sm text-brand-soft font-medium">Retorno directo por peso invertido.</p>
+        </div>
+
+      </div>
+
+      <!-- Fila 2: Gráficas -->
+      <div class="grid grid-cols-1 xl:grid-cols-12 gap-3 flex-1 min-h-0">
+
+        <!-- Gráfica 1 -->
+        <div class="xl:col-span-6 panel p-4 flex flex-col justify-between min-h-0">
+          <div class="flex items-center justify-between pb-2 border-b border-brand-line flex-shrink-0 gap-2">
+            <div>
+              <h3 class="text-sm font-mono font-extrabold text-brand-blue uppercase">Apalancamiento de Capital</h3>
+              <p class="text-base font-bold text-brand-navy mt-0.5">CFTE ($180M) vs Ahorro Social ($2.265,8M)</p>
+            </div>
+            <span class="px-2.5 py-1 bg-brand-skysoft text-brand-blue border border-brand-line text-xs font-mono rounded flex-shrink-0 font-extrabold">
+              
+            </span>
+          </div>
+
+          <div class="flex-1 min-h-0 w-full relative py-2">
+            <canvas id="chartFinancialLeverage"></canvas>
+          </div>
+
+          <!-- TARJETA RESERVA DE AUDITORÍA -->
+          <div class="p-3 rounded-xl bg-brand-goldsoft border-2 border-brand-amber text-sm text-brand-navy flex items-start gap-3 shadow-sm flex-shrink-0">
+            <div class="h-9 w-9 rounded-lg bg-brand-amber text-white flex items-center justify-center flex-shrink-0 mt-0.5">
+              <i class="fa-solid fa-shield-cat text-lg"></i>
+            </div>
+            <div>
+              <h4 class="font-extrabold text-brand-navy text-sm font-mono uppercase">Nota técnica</h4>
+              <p class="mt-0.5 text-brand-ink leading-relaxed text-sm font-medium">
+                La cifra de <strong>$2.265,8M</strong> es un balance conservador. No contempla los contratos de aprendizaje.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gráfica 2 -->
+        <div class="xl:col-span-6 panel p-4 flex flex-col justify-between min-h-0">
+          <div class="flex items-center justify-between pb-2 border-b border-brand-line flex-shrink-0 gap-2">
+            <div>
+              <h3 class="text-sm font-mono font-extrabold text-brand-green uppercase">Evolución y Proyección SROI</h3>
+              <p class="text-base font-bold text-brand-navy mt-0.5">Retorno Social Generado por Cada $1 COP Invertido</p>
+            </div>
+            <span class="px-2.5 py-1 bg-[#E9F5E4] text-brand-green border border-[#C8E6BB] text-xs font-mono rounded flex-shrink-0 font-extrabold">
+              14.7 : 1 (Actual)
+            </span>
+          </div>
+
+          <div class="flex-1 min-h-0 w-full relative py-2">
+            <canvas id="chartSroiEvolution"></canvas>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2 pt-2 border-t border-brand-line text-center font-mono text-sm flex-shrink-0">
+            <div class="bg-brand-bg p-2 rounded border border-brand-line">
+              <span class="text-brand-soft text-xs block font-bold">Año Anterior</span>
+              <span class="text-brand-ink font-extrabold text-base">16.8 : 1</span>
+            </div>
+            <div class="bg-[#E9F5E4] p-2 rounded border border-[#C8E6BB]">
+              <span class="text-brand-green text-xs block font-extrabold">Año Actual</span>
+              <span class="text-brand-green font-extrabold text-base">14.7 : 1 (+85%)</span>
+            </div>
+            <div class="bg-brand-skysoft p-2 rounded border border-brand-line">
+              <span class="text-brand-blue text-xs block font-extrabold">Proyectado</span>
+              <span class="text-brand-blue font-extrabold text-base">17 : 1</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 4: PROYECTO 01 — CONVENIO FENOCO                       -->
+    <!-- ============================================================ -->
+    <section id="slide4" class="slide-page gap-3 p-1">
+
+      <div class="panel rounded-xl px-5 py-3 border-l-8 border-l-brand-green flex items-center justify-between gap-3 flex-shrink-0">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-[#E9F5E4] text-[#2E6B22] border border-[#C8E6BB]">Listo para Cierre · Alto Valor</span>
+            <span class="text-sm font-mono font-bold text-brand-soft uppercase tracking-wider">Proyecto 01 de 05</span>
+          </div>
+          <h2 class="text-2xl xl:text-3xl font-display font-bold text-brand-navy mt-1">Convenio FENOCO — Vivero Agroindustrial Comunitario</h2>
+        </div>
+        <div class="text-right flex-shrink-0">
+          <div class="text-5xl xl:text-6xl font-mono font-extrabold text-brand-green leading-none">95%</div>
+          <div class="text-sm font-bold text-brand-soft uppercase tracking-wide mt-1">Avance de ejecución</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 xl:grid-cols-12 gap-3 flex-1 min-h-0">
+
+        <!-- Columna Izquierda -->
+        <div class="xl:col-span-8 panel p-4 flex flex-col justify-between overflow-y-auto">
+          <h3 class="text-sm font-mono font-extrabold text-brand-blue uppercase border-b border-brand-line pb-2 mb-3">
+            Hitos Técnicos &amp; Inversión de Cierre
+          </h3>
+
+          <div class="space-y-3.5 text-base text-brand-ink">
+            <div class="flex items-start gap-3.5 p-3.5 rounded-xl bg-brand-bg border border-brand-line">
+              <span class="h-7 w-7 rounded-md bg-brand-green text-white flex items-center justify-center font-bold text-sm flex-shrink-0">1</span>
+              <div>
+                <strong class="text-brand-navy text-lg block">Infraestructura 100% Financiada por el Aliado</strong>
+                <p class="text-brand-soft mt-1 text-base font-medium">FENOCO cubrió la totalidad de la obra física y adecuaciones. El CFTE no tuvo desembolsos por obras civiles.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3.5 p-3.5 rounded-xl bg-brand-bg border border-brand-line">
+              <span class="h-7 w-7 rounded-md bg-brand-blue text-white flex items-center justify-center font-bold text-sm flex-shrink-0">2</span>
+              <div>
+                <strong class="text-brand-navy text-lg block">Requerimiento Marginal de Cierre</strong>
+                <div class="grid grid-cols-2 gap-3 mt-2 font-mono text-base">
+                  <div class="p-2.5 rounded-lg bg-white border border-brand-line text-brand-navy font-bold">• 10 Jornales de Mano de Obra</div>
+                  <div class="p-2.5 rounded-lg bg-white border border-brand-line text-brand-navy font-bold">• 120 kg Insumo Compost</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3.5 p-3.5 rounded-xl bg-brand-bg border border-brand-line">
+              <span class="h-7 w-7 rounded-md bg-brand-gold text-white flex items-center justify-center font-bold text-sm flex-shrink-0">3</span>
+              <div>
+                <strong class="text-brand-navy text-lg block">Escalabilidad Banano + Certificación ICA (Fase II)</strong>
+                <p class="text-brand-soft mt-1 text-base font-medium">Se habilita la línea de banano y se asegura el contrato de compra de árboles por parte de FENOCO.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna Derecha -->
+        <div class="xl:col-span-4 panel p-4 bg-[#F6FBF3] border-2 border-[#C8E6BB] flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2 text-brand-green font-mono font-extrabold text-sm uppercase mb-2">
+              <i class="fa-solid fa-gavel text-lg"></i>
+              <span>Dictamen para la Junta</span>
+            </div>
+            <h4 class="text-xl font-bold text-brand-navy leading-tight">Aprobar Desembolso Marginal de Cierre</h4>
+            <p class="text-base text-brand-ink mt-2 leading-relaxed font-medium">
+              Con una partida mínima inmediata se entrega la obra al 100%, detonando la compra garantizada de árboles en Fase II.
+            </p>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-white border border-[#C8E6BB] space-y-1.5 my-3 font-mono text-sm">
+            <div class="flex justify-between">
+              <span class="text-brand-soft font-bold">Costo Directo CFTE:</span>
+              <span class="font-extrabold text-brand-green">$0 COP Obras</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-brand-soft font-bold">Aporte Aliado:</span>
+              <span class="font-extrabold text-brand-navy">100% Infraestructura</span>
+            </div>
+          </div>
+
+          <button onclick="goToSlide(9)" class="w-full py-3 rounded-xl bg-brand-green hover:bg-[#3D852C] text-white font-bold text-base shadow-md transition-all flex items-center justify-center gap-2">
+            <span>TOMA DE DECISIONES</span>
+            <i class="fa-solid fa-arrow-right text-sm"></i>
+          </button>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 5: PROYECTO 02 — SABORES QUE INSPIRA                   -->
+    <!-- ============================================================ -->
+    <section id="slide5" class="slide-page gap-3 p-1">
+
+      <div class="panel rounded-xl px-5 py-3 border-l-8 border-l-brand-amber flex items-center justify-between gap-3 flex-shrink-0">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-[#FBF6E7] text-[#8A6D1B] border border-[#E8D9A8]">Desfinanciado · Pausa Prudente</span>
+            <span class="text-sm font-mono font-bold text-brand-soft uppercase tracking-wider">Proyecto 02 de 05</span>
+          </div>
+          <h2 class="text-2xl xl:text-3xl font-display font-bold text-brand-navy mt-1">Sabores que Inspira — Cocina de Alto Nivel &amp; Casino</h2>
+        </div>
+        <div class="text-right flex-shrink-0">
+          <div class="text-5xl xl:text-6xl font-mono font-extrabold text-brand-amber leading-none">PAUSA</div>
+          <div class="text-sm font-bold text-brand-soft uppercase tracking-wide mt-1">Horizonte a 5 Años</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 xl:grid-cols-12 gap-3 flex-1 min-h-0">
+
+        <div class="xl:col-span-8 panel p-4 flex flex-col justify-between overflow-y-auto">
+          <h3 class="text-sm font-mono font-extrabold text-brand-amber uppercase border-b border-brand-line pb-2 mb-3">
+            Criterios de Protección Financiera
+          </h3>
+
+          <div class="space-y-3.5 text-base text-brand-ink">
+            <div class="flex items-start gap-3.5 p-3.5 rounded-xl bg-brand-bg border border-brand-line">
+              <span class="h-7 w-7 rounded-md bg-brand-amber text-white flex items-center justify-center font-bold text-sm flex-shrink-0">1</span>
+              <div>
+                <strong class="text-brand-navy text-lg block">Alcance del Proyecto Original</strong>
+                <p class="text-brand-soft mt-1 text-base font-medium">Propuesta de adecuación del casino en cocina de alta gama para la formación gastronómica y transformación agroindustrial por 5 años.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3.5 p-3.5 rounded-xl bg-brand-bg border border-brand-line">
+              <span class="h-7 w-7 rounded-md bg-brand-blue text-white flex items-center justify-center font-bold text-sm flex-shrink-0">2</span>
+              <div>
+                <strong class="text-brand-navy text-lg block">Imprevistos</strong>
+                <p class="text-brand-soft mt-1 text-base font-medium">Ante iliquidez temporal, se detuvieron las negociaciones con potenciales aliados externos.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3.5 p-3.5 rounded-xl bg-brand-bg border border-brand-line">
+              <span class="h-7 w-7 rounded-md bg-brand-navy text-white flex items-center justify-center font-bold text-sm flex-shrink-0">3</span>
+              <div>
+                <strong class="text-brand-navy text-lg block">Evolución Estratégica a Programa Permanente</strong>
+                <p class="text-brand-soft mt-1 text-base font-medium">Recomendación técnica: rediseñar la iniciativa como programa institucional formal para captación de aportes en 2027.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="xl:col-span-4 panel p-4 bg-[#FBF6E7] border-2 border-[#E8D9A8] flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2 text-brand-amber font-mono font-extrabold text-sm uppercase mb-2">
+              <i class="fa-solid fa-shield-halved text-lg"></i>
+              <span>Propuesta</span>
+            </div>
+            <h4 class="text-xl font-bold text-brand-navy leading-tight">Pasar de proyecto a programa</h4>
+            <p class="text-base text-brand-ink mt-2 leading-relaxed font-medium">
+              
+            </p>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-white border border-[#E8D9A8] space-y-1.5 my-3 font-mono text-sm">
+            <div class="flex justify-between">
+              <span class="text-brand-soft font-bold">Estado de Riesgo:</span>
+              <span class="font-extrabold text-brand-green">0% Riesgo Pasivo</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-brand-soft font-bold">Horizonte:</span>
+              <span class="font-extrabold text-brand-navy">Programación 2027</span>
+            </div>
+          </div>
+
+          <button onclick="goToSlide(9)" class="w-full py-3 rounded-xl bg-brand-amber hover:bg-[#C28F2C] text-white font-bold text-base shadow-md transition-all flex items-center justify-center gap-2">
+            <span>TOMA DE DECISIONES</span>
+            <i class="fa-solid fa-arrow-right text-sm"></i>
+          </button>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 6: PROYECTO 03 — TRANSFORMACIÓN DIGITAL                 -->
+    <!-- ============================================================ -->
+    <section id="slide6" class="slide-page gap-3 p-1">
+
+      <div class="panel rounded-xl px-5 py-3 border-l-8 border-l-brand-blue flex items-center justify-between gap-3 flex-shrink-0">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-brand-skysoft text-brand-blue border border-brand-line">Línea Base: 100% OK</span>
+            <span class="text-sm font-mono font-bold text-brand-soft uppercase tracking-wider">Proyecto 03 de 05</span>
+          </div>
+          <h2 class="text-2xl xl:text-3xl font-display font-bold text-brand-navy mt-1">Transformación Digital de COOMULBANO</h2>
+        </div>
+        <div class="text-right flex-shrink-0">
+          <div class="text-5xl xl:text-6xl font-mono font-extrabold text-brand-blue leading-none">10%-</div>
+          <div class="text-sm font-bold text-brand-soft uppercase tracking-wide mt-1">Avance global</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 xl:grid-cols-12 gap-3 flex-1 min-h-0">
+
+        <div class="xl:col-span-8 panel p-4 flex flex-col justify-between overflow-y-auto">
+          <h3 class="text-sm font-mono font-extrabold text-brand-blue uppercase border-b border-brand-line pb-2 mb-3">
+            Avance Técnico &amp; Hito Normativo Cero Costo
+          </h3>
+
+          <div class="space-y-3.5 text-base text-brand-ink">
+            <div class="flex items-start gap-3.5 p-3.5 rounded-xl bg-brand-bg border border-brand-line">
+              <span class="h-7 w-7 rounded-md bg-brand-green text-white flex items-center justify-center font-bold text-sm flex-shrink-0">1</span>
+              <div>
+                <strong class="text-brand-navy text-lg block">Diagnóstico y Línea Base Culminados al 100%</strong>
+                <p class="text-brand-soft mt-1 text-base font-medium">Evaluación del Indice de Competencias digitales interno.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3.5 p-3.5 rounded-xl bg-brand-bg border border-brand-line">
+              <span class="h-7 w-7 rounded-md bg-brand-red text-white flex items-center justify-center font-bold text-sm flex-shrink-0">2</span>
+              <div>
+                <strong class="text-brand-navy text-lg block">Requisito Normativo de Gobernanza</strong>
+                <p class="text-brand-soft mt-1 text-base font-medium">Para iniciar la fase de ejecucion activa se requiere la expedición formal de la Política Interna de Manejo de Datos.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3.5 p-3.5 rounded-xl bg-brand-bg border border-brand-line">
+              <span class="h-7 w-7 rounded-md bg-brand-blue text-white flex items-center justify-center font-bold text-sm flex-shrink-0">3</span>
+              <div>
+                <strong class="text-brand-navy text-lg block">Impacto Financiero Actual: $0 COP</strong>
+                <p class="text-brand-soft mt-1 text-base font-medium">Esta fase no requiere desembolsos monetarios; depende en su totalidad de la firma administrativa de la Gerencia.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="xl:col-span-4 panel p-4 bg-brand-skysoft border-2 border-brand-line flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2 text-brand-blue font-mono font-extrabold text-sm uppercase mb-2">
+              <i class="fa-solid fa-file-signature text-lg"></i>
+              <span>Propuesta</span>
+            </div>
+            <h4 class="text-xl font-bold text-brand-navy leading-tight">Expedir Política de Transformación Digital</h4>
+            <p class="text-base text-brand-ink mt-2 leading-relaxed font-medium">
+              Acelerar la transformación digital y gobernanza de datos de la cooperativa mediante la aprobación de la formulación de una políticva interna.
+            </p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-white border border-brand-line space-y-1.5 my-3 font-mono text-sm">
+            <div class="flex justify-between">
+              <span class="text-brand-soft font-bold">Costo Monetario:</span>
+              <span class="font-extrabold text-brand-green">$0 COP Requeridos</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-brand-soft font-bold">Requisito:</span>
+              <span class="font-extrabold text-brand-navy">Firma de Directriz</span>
+            </div>
+          </div>
+
+          <button onclick="goToSlide(9)" class="w-full py-3 rounded-xl bg-brand-blue hover:bg-brand-navy text-white font-bold text-base shadow-md transition-all flex items-center justify-center gap-2">
+            <span>TOMA DE DECISIONES</span>
+            <i class="fa-solid fa-arrow-right text-sm"></i>
+          </button>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 7: PROYECTO 04 — VERSE BIEN (MANOS Y PIES)             -->
+    <!-- ============================================================ -->
+    <section id="slide7" class="slide-page gap-3 p-1">
+
+      <div class="panel rounded-xl px-5 py-3 border-l-8 border-l-brand-amber flex items-center justify-between gap-3 flex-shrink-0">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-[#FBF6E7] text-[#8A6D1B] border border-[#E8D9A8]">En Pausa · Sin Presupuesto</span>
+            <span class="text-sm font-mono font-bold text-brand-soft uppercase tracking-wider">Proyecto 04 de 05</span>
+          </div>
+          <h2 class="text-2xl xl:text-3xl font-display font-bold text-brand-navy mt-1">Proyecto Verse Bien — Operarios de Manos y Pies</h2>
+        </div>
+        <div class="text-right flex-shrink-0">
+          <div class="text-5xl xl:text-6xl font-mono font-extrabold text-brand-amber leading-none">PAUSA</div>
+          <div class="text-sm font-bold text-brand-soft uppercase tracking-wide mt-1">Requiere $4M para cierre</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 xl:grid-cols-12 gap-3 flex-1 min-h-0">
+
+        <div class="xl:col-span-8 panel p-4 flex flex-col justify-between overflow-y-auto">
+          <h3 class="text-sm font-mono font-extrabold text-brand-amber uppercase border-b border-brand-line pb-2 mb-3">
+            Estado Operativo &amp; Partida Marginal Requerida
+          </h3>
+
+          <div class="space-y-3.5 text-base text-brand-ink">
+            <div class="flex items-start gap-3.5 p-3.5 rounded-xl bg-brand-bg border border-brand-line">
+              <span class="h-7 w-7 rounded-md bg-brand-amber text-white flex items-center justify-center font-bold text-sm flex-shrink-0">1</span>
+              <div>
+                <strong class="text-brand-navy text-lg block">Interrupción por desfinanciación</strong>
+                <p class="text-brand-soft mt-1 text-base font-medium">Debido a la emergencia de COOMULBANANO, se pausaron gestiones de este proyecto.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3.5 p-3.5 rounded-xl bg-brand-bg border border-brand-line">
+              <span class="h-7 w-7 rounded-md bg-brand-blue text-white flex items-center justify-center font-bold text-sm flex-shrink-0">2</span>
+              <div>
+                <strong class="text-brand-navy text-lg block">Factor Exógeno SENA</strong>
+                <p class="text-brand-soft mt-1 text-base font-medium">La alta rotación de coordinadores en el SENA dificultó la solicitud del operario y homologación. Implica renegociaciones.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3.5 p-3.5 rounded-xl bg-brand-bg border border-brand-line">
+              <span class="h-7 w-7 rounded-md bg-brand-green text-white flex items-center justify-center font-bold text-sm flex-shrink-0">3</span>
+              <div>
+                <strong class="text-brand-navy text-lg block">Inversión Final de Cierre: $4.000.000 COP</strong>
+                <p class="text-brand-soft mt-1 text-base font-medium">Con este rubro marginal se culmina la instrucción y se entrega la certificación a las beneficiarias.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="xl:col-span-4 panel p-4 bg-[#FBF6E7] border-2 border-[#E8D9A8] flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2 text-brand-amber font-mono font-extrabold text-sm uppercase mb-2">
+              <i class="fa-solid fa-coins text-lg"></i>
+              <span>Dictamen para la Junta</span>
+            </div>
+            <h4 class="text-xl font-bold text-brand-navy leading-tight">Asignar $4M COP para Cierre de Cohorte</h4>
+            <p class="text-base text-brand-ink mt-2 leading-relaxed font-medium">
+              Liberar el monto marginal para graduar al grupo de operarias y cumplir los compromisos comunitarios.
+            </p>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-white border border-[#E8D9A8] space-y-1.5 my-3 font-mono text-sm">
+            <div class="flex justify-between">
+              <span class="text-brand-soft font-bold">Monto Requerido:</span>
+              <span class="font-extrabold text-brand-amber">$4.000.000 COP</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-brand-soft font-bold">Resultado:</span>
+              <span class="font-extrabold text-brand-green">Certificación 100%</span>
+            </div>
+          </div>
+
+          <button onclick="goToSlide(9)" class="w-full py-3 rounded-xl bg-brand-amber hover:bg-[#C28F2C] text-white font-bold text-base shadow-md transition-all flex items-center justify-center gap-2">
+            <span>TOMA DE DECISIONES</span>
+            <i class="fa-solid fa-arrow-right text-sm"></i>
+          </button>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 8: PROYECTO 05 — CONVENIO UNIMAGDALENA                 -->
+    <!-- ============================================================ -->
+    <section id="slide8" class="slide-page gap-3 p-1">
+
+      <div class="panel rounded-xl px-5 py-3 border-l-8 border-l-brand-red flex items-center justify-between gap-3 flex-shrink-0">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-[#FDEBEC] text-[#B21F2E] border border-[#F3C1C6]">Pausa absoluta por Desfinanciación</span>
+            <span class="text-sm font-mono font-bold text-brand-soft uppercase tracking-wider">Proyecto 05 de 05</span>
+          </div>
+          <h2 class="text-2xl xl:text-3xl font-display font-bold text-brand-navy mt-1">Convenio COOMULBANANO — Universidad del Magdalena</h2>
+        </div>
+        <div class="text-right flex-shrink-0">
+          <div class="text-5xl xl:text-6xl font-mono font-extrabold text-brand-red leading-none">0%</div>
+          <div class="text-sm font-bold text-brand-soft uppercase tracking-wide mt-1">Ejecución de vigencia</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 xl:grid-cols-12 gap-3 flex-1 min-h-0">
+
+        <div class="xl:col-span-8 panel p-4 flex flex-col justify-between overflow-y-auto">
+          <h3 class="text-sm font-mono font-extrabold text-brand-red uppercase border-b border-brand-line pb-2 mb-3">
+            Saneamiento y Cierre de Vigencia
+          </h3>
+
+          <div class="space-y-3.5 text-base text-brand-ink">
+            <div class="flex items-start gap-3.5 p-3.5 rounded-xl bg-brand-bg border border-brand-line">
+              <span class="h-7 w-7 rounded-md bg-brand-red text-white flex items-center justify-center font-bold text-sm flex-shrink-0">1</span>
+              <div>
+                <strong class="text-brand-navy text-lg block">Desfinanciación</strong>
+                <p class="text-brand-soft mt-1 text-base font-medium">Proyecto sin recursos para la ejecución con reducción de alcance.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3.5 p-3.5 rounded-xl bg-brand-bg border border-brand-line">
+              <span class="h-7 w-7 rounded-md bg-brand-blue text-white flex items-center justify-center font-bold text-sm flex-shrink-0">2</span>
+              <div>
+                <strong class="text-brand-navy text-lg block">Compromisos</strong>
+                <p class="text-brand-soft mt-1 text-base font-medium">Ejecución de proyecto: Promoción de espacios visibles de expresión para juventudes rurales de la subregión norte del Magdalena.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3.5 p-3.5 rounded-xl bg-brand-bg border border-brand-line">
+              <span class="h-7 w-7 rounded-md bg-brand-green text-white flex items-center justify-center font-bold text-sm flex-shrink-0">3</span>
+              <div>
+                <strong class="text-brand-navy text-lg block">Perdida de beneficios potenciales</strong>
+                <p class="text-brand-soft mt-1 text-base font-medium">Ciencia, investigación, participación en proyectos de la cooperativa.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="xl:col-span-4 panel p-4 bg-[#FDEBEC] border-2 border-[#F3C1C6] flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2 text-brand-red font-mono font-extrabold text-sm uppercase mb-2">
+              <i class="fa-solid fa-circle-xmark text-lg"></i>
+              <span>Propuesta</span>
+            </div>
+            <h4 class="text-xl font-bold text-brand-navy leading-tight">Evaluar costo-beneficio</h4>
+            <p class="text-base text-brand-ink mt-2 leading-relaxed font-medium">
+              Evaluar el costo beneficio del convenio en el marco de los posibles aportes en ciencias agrarias, transferencia tecnológica, investigación cientifica y participación de un fuerte aliado estratégico de la cuadruple hélice regional en proyectos orientados a la mejora de la productividad empresarial.
+            </p>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-white border border-[#F3C1C6] space-y-1.5 my-3 font-mono text-sm">
+            <div class="flex justify-between">
+              <span class="text-brand-soft font-bold">Pasivos Pendientes:</span>
+              <span class="font-extrabold text-brand-green">$50+ COP Pasivos</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-brand-soft font-bold">Estatus Auditoría:</span>
+              <span class="font-extrabold text-brand-navy">Proyecto sin financiación</span>
+            </div>
+          </div>
+
+          <button onclick="goToSlide(9)" class="w-full py-3 rounded-xl bg-brand-red hover:bg-[#B21F2E] text-white font-bold text-base shadow-md transition-all flex items-center justify-center gap-2">
+            <span>TOMA DE DECISIONES</span>
+            <i class="fa-solid fa-arrow-right text-sm"></i>
+          </button>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 9: MATRIZ DE RESOLUCIONES EJECUTIVAS                   -->
+    <!-- ============================================================ -->
+    <section id="slide9" class="slide-page gap-3 p-1">
+
+      <div class="panel rounded-xl px-5 py-3 border-l-4 border-l-brand-blue flex items-center justify-between flex-shrink-0 gap-3">
+        <div>
+          <span class="text-sm font-mono font-extrabold text-brand-blue uppercase tracking-wider">Gobernanza &amp; Resoluciones</span>
+          <h2 class="text-lg font-display font-bold text-brand-navy">Matriz de Decisiones Directas para la Junta de Administración</h2>
+        </div>
+        <div class="text-sm font-mono font-bold text-brand-soft hidden sm:block flex-shrink-0">
+          Sesión de Cierre &amp; Programación 2026-2027
+        </div>
+      </div>
+
+      <!-- Tabla -->
+      <div class="panel rounded-xl p-4 flex-1 min-h-0 flex flex-col justify-between overflow-hidden">
+
+        <div class="overflow-y-auto pr-1 flex-1">
+          <table class="w-full text-left border-collapse">
+
+            <!-- BLOQUE 1 -->
+            <thead>
+              <tr class="bg-brand-skysoft border-y border-brand-line text-brand-navy text-sm font-mono font-extrabold uppercase tracking-wider">
+                <th colspan="5" class="py-2 px-3 text-brand-blue">
+                  <i class="fa-solid fa-coins mr-2"></i> SECCIÓN A: DECISIONES FINANCIERAS DIRECTAS (REQUIEREN DESEMBOLSO)
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-brand-line text-base">
+
+              <tr class="hover:bg-brand-bg/70 transition-colors">
+                <td class="py-2.5 px-3 font-bold text-brand-navy text-base">
+                  <i class="fa-solid fa-seedling text-brand-green mr-2"></i>
+                  Vivero FENOCO
+                </td>
+                <td class="py-2.5 px-2"><span class="px-2.5 py-1 rounded-full bg-[#E9F5E4] text-[#2E6B22] font-extrabold text-xs">Por Cerrar</span></td>
+                <td class="py-2.5 px-2 font-bold text-brand-navy">10 Jornales + 120 kg Compost</td>
+                <td class="py-2.5 px-2 text-brand-soft font-medium">Línea banano + venta Fase II (ICA)</td>
+                <td class="py-2.5 px-2 text-right">
+                  <span class="px-3.5 py-1.5 rounded-lg bg-brand-green text-white font-extrabold text-sm shadow-sm inline-block">APROBAR DESEMBOLSO</span>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-brand-bg/70 transition-colors">
+                <td class="py-2.5 px-3 font-bold text-brand-navy text-base">
+                  <i class="fa-solid fa-spa text-brand-amber mr-2"></i>
+                  Verse Bien
+                </td>
+                <td class="py-2.5 px-2"><span class="px-2.5 py-1 rounded-full bg-[#FBF6E7] text-[#8A6D1B] font-extrabold text-xs">En Pausa</span></td>
+                <td class="py-2.5 px-2 font-bold text-brand-amber">$4.000.000 COP para cierre</td>
+                <td class="py-2.5 px-2 text-brand-soft font-medium">Certificación final de operarias</td>
+                <td class="py-2.5 px-2 text-right">
+                  <span class="px-3.5 py-1.5 rounded-lg bg-brand-amber text-white font-extrabold text-sm shadow-sm inline-block">ASIGNAR PRESUPUESTO</span>
+                </td>
+              </tr>
+
+            </tbody>
+
+            <!-- BLOQUE 2 -->
+            <thead>
+              <tr class="bg-brand-bg border-y border-brand-line text-brand-navy text-sm font-mono font-extrabold uppercase tracking-wider">
+                <th colspan="5" class="py-2 px-3 text-brand-soft">
+                  <i class="fa-solid fa-file-signature mr-2"></i> SECCIÓN B: APROBACIONES DE GOBERNANZA &amp; SANEAMIENTO
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-brand-line text-base">
+
+              <tr class="hover:bg-brand-bg/70 transition-colors">
+                <td class="py-2.5 px-3 font-bold text-brand-navy text-base">
+                  <i class="fa-solid fa-laptop-code text-brand-blue mr-2"></i>
+                  Transformación Digital
+                </td>
+                <td class="py-2.5 px-2"><span class="px-2.5 py-1 rounded-full bg-brand-skysoft text-brand-blue font-extrabold text-xs">Línea Base 100%</span></td>
+                <td class="py-2.5 px-2 text-brand-navy font-bold">Política de Gobernanza de Datos</td>
+                <td class="py-2.5 px-2 text-brand-soft font-medium">Transformación gradual</td>
+                <td class="py-2.5 px-2 text-right">
+                  <span class="px-3.5 py-1.5 rounded-lg bg-brand-blue text-white font-extrabold text-sm shadow-sm inline-block">EXPEDIR POLÍTICA</span>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-brand-bg/70 transition-colors">
+                <td class="py-2.5 px-3 font-bold text-brand-navy text-base">
+                  <i class="fa-solid fa-utensils text-brand-amber mr-2"></i>
+                  Sabores que Inspira
+                </td>
+                <td class="py-2.5 px-2"><span class="px-2.5 py-1 rounded-full bg-[#FBF6E7] text-[#8A6D1B] font-extrabold text-xs">Desfinanciado</span></td>
+                <td class="py-2.5 px-2 text-brand-soft font-bold">Migrar a Programa Institucional</td>
+                <td class="py-2.5 px-2 text-brand-soft font-medium">Reestructuración para 2027</td>
+                <td class="py-2.5 px-2 text-right">
+                  <span class="px-3.5 py-1.5 rounded-lg bg-brand-bg text-brand-navy border border-brand-line font-extrabold text-sm inline-block">PROGRAMAR 2027</span>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-brand-bg/70 transition-colors">
+                <td class="py-2.5 px-3 font-bold text-brand-navy text-base">
+                  <i class="fa-solid fa-university text-brand-red mr-2"></i>
+                  Convenio UniMagdalena
+                </td>
+                <td class="py-2.5 px-2"><span class="px-2.5 py-1 rounded-full bg-[#FDEBEC] text-[#B21F2E] font-extrabold text-xs">Sin Ejecución</span></td>
+                <td class="py-2.5 px-2 text-brand-soft font-bold">Asignar presupuesto</td>
+                <td class="py-2.5 px-2 text-brand-soft font-medium">Evaluar costo-beneficio</td>
+                <td class="py-2.5 px-2 text-right">
+                  <span class="px-3.5 py-1.5 rounded-lg bg-brand-bg text-brand-soft border border-brand-line font-extrabold text-sm inline-block">EVALUAR</span>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Síntesis -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-3 border-t border-brand-line flex-shrink-0 mt-2 text-base">
+          <div class="p-2.5 rounded-xl bg-brand-bg border border-brand-line">
+            <span class="font-mono text-brand-blue uppercase font-extrabold text-xs">1. Retorno Comunitario</span>
+            <p class="text-brand-ink mt-1 text-sm font-medium leading-normal">
+              Inversión de <strong>$180M</strong> propia devolvió <strong>$2.265,8M</strong> de ahorro social a la región.
+            </p>
+          </div>
+          <div class="p-2.5 rounded-xl bg-brand-bg border border-brand-line">
+            <span class="font-mono text-brand-green uppercase font-extrabold text-xs">2. Cierre FENOCO</span>
+            <p class="text-brand-ink mt-1 text-sm font-medium leading-normal">
+              Aporte marginal en mano de obra activa la comercialización de la Fase II.
+            </p>
+          </div>
+          <div class="p-2.5 rounded-xl bg-brand-bg border border-brand-line">
+            <span class="font-mono text-brand-navy uppercase font-extrabold text-xs">3. Avance Digital Cero Costo</span>
+            <p class="text-brand-ink mt-1 text-sm font-medium leading-normal">
+              Aprobación de la política desbloquea la herramienta tecnológica sin afectación de caja.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 10: CIERRE — IMPACTO POSITIVO & AGRADECIMIENTO         -->
+    <!-- ============================================================ -->
+    <section id="slide10" class="slide-page p-1">
+
+      <div class="flex-1 rounded-2xl bg-brand-navy relative overflow-hidden flex flex-col items-center justify-center text-center px-8">
+        <div class="absolute inset-0" style="background: radial-gradient(circle at 50% 20%, rgba(61,165,217,0.3) 0%, transparent 65%);"></div>
+        <div class="absolute bottom-0 left-0 right-0 h-2.5 instit-line"></div>
+
+        <div class="relative flex flex-col items-center max-w-4xl">
+          <span class="px-4 py-1.5 rounded-full border border-white/30 bg-white/10 text-white font-mono text-sm uppercase tracking-wider mb-5 font-semibold">
+            Balance Consolidado 2026
+          </span>
+
+          <h2 class="text-3xl xl:text-5xl font-display font-bold text-white leading-tight">
+            Este año, el centro devolvió a la comunidad <span class="text-brand-gold font-extrabold">$2.265,8 millones</span> en valor social directo
+          </h2>
+
+          <!-- Tarjetas Macro -->
+          <div class="grid grid-cols-2 xl:grid-cols-4 gap-3.5 mt-6 w-full">
+            <div class="rounded-xl bg-white/10 border border-white/20 p-3.5">
+              <div class="text-3xl xl:text-4xl font-mono font-extrabold text-brand-gold">$2.265,8M</div>
+              <div class="text-sm text-white/90 mt-1 font-medium">Ahorro social comunitario</div>
+            </div>
+            <div class="rounded-xl bg-white/10 border border-white/20 p-3.5">
+              <div class="text-3xl xl:text-4xl font-mono font-extrabold text-brand-gold">14.7 : 1</div>
+              <div class="text-sm text-white/90 mt-1 font-medium">SROI trimestre 3</div>
+            </div>
+            <div class="rounded-xl bg-white/10 border border-white/20 p-3.5">
+              <div class="text-3xl xl:text-4xl font-mono font-extrabold text-brand-gold">17 : 1</div>
+              <div class="text-sm text-white/90 mt-1 font-medium">SROI proyectado</div>
+            </div>
+            <div class="rounded-xl bg-white/10 border border-white/20 p-3.5">
+              <div class="text-3xl xl:text-4xl font-mono font-extrabold text-brand-gold">287.6%</div>
+              <div class="text-sm text-white/90 mt-1 font-medium">KPI general</div>
+            </div>
+          </div>
+
+          <div class="w-20 h-1.5 instit-line rounded-full my-6"></div>
+
+          <h3 class="text-5xl xl:text-6xl font-display font-extrabold text-white leading-none">Muchas Gracias</h3>
+          <p class="text-sm text-white/80 mt-3 font-mono font-bold">COOMULBANANO · CFTE — DIRECCIÓN TÉCNICA 2026</p>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ============================================================== -->
+  <!-- BARRA INFERIOR                                                 -->
+  <!-- ============================================================== -->
+  <footer class="w-full bg-white border-t border-brand-line px-5 py-2 flex items-center justify-between text-sm font-mono text-brand-soft flex-shrink-0">
+    <div class="flex items-center gap-3">
+      <span class="flex items-center gap-2 text-brand-blue font-extrabold">
+        <span class="h-2.5 w-2.5 rounded-full bg-brand-blue animate-pulse"></span>
+        Ing. Juan L. Cueto
+      </span>
+    </div>
+    <div class="flex items-center gap-3">
+      <span id="pageIndicatorFooter" class="px-2.5 py-0.5 rounded bg-brand-bg border border-brand-line text-brand-navy font-extrabold text-base">01 / 10</span>
+    </div>
+  </footer>
+
+  <!-- ============================================================== -->
+  <!-- MODAL: BLINDAJE TÉCNICO                                        -->
+  <!-- ============================================================== -->
+  <div id="defenseModal" class="fixed inset-0 z-50 bg-brand-navy/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="panel max-w-2xl w-full rounded-2xl p-6 border-2 border-brand-blue shadow-2xl relative">
+
+      <div class="flex items-center justify-between pb-3 border-b border-brand-line">
+        <div class="flex items-center gap-3">
+          <div class="h-10 w-10 rounded-lg bg-brand-skysoft flex items-center justify-center text-brand-blue border border-brand-line">
+            <i class="fa-solid fa-shield-halved text-lg"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-brand-navy font-mono uppercase">Argumentación Técnica de Gestión</h3>
+            <p class="text-sm text-brand-soft font-medium">Sustento ejecutivo ante Gerencia y Junta Directiva</p>
+          </div>
+        </div>
+        <button onclick="toggleDefenseModal()" class="text-brand-soft hover:text-brand-navy p-1">
+          <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+      </div>
+
+      <div class="my-4 space-y-3.5 text-base text-brand-ink max-h-[55vh] overflow-y-auto pr-1">
+
+        <div class="p-3.5 rounded-xl bg-brand-bg border-l-4 border-l-brand-green border border-brand-line">
+          <h4 class="font-extrabold text-brand-navy text-base">1. Sustento de la relación $180M vs $2.265,8M:</h4>
+          <p class="mt-1 leading-relaxed text-sm font-medium">
+            "Articulamos una inversión total multiactor de <strong>$500M</strong>, donde COOMULBANANO solo aportó <strong>$180M</strong>. Esto generó un retorno social de <strong>$2.265,8M</strong> en ahorro comunitario (SROI de 14.7:1)."
+          </p>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-brand-bg border-l-4 border-l-brand-amber border border-brand-line">
+          <h4 class="font-extrabold text-brand-navy text-base">2. Cómo responder sobre pausas en proyectos:</h4>
+          <p class="mt-1 leading-relaxed text-sm font-medium">
+            "La capacidad técnica está intacta. Las variaciones respondieron a prudencia de caja y a la rotación técnica en el SENA. Actuamos con rigor financiero para no contraer pasivos en descubierto."
+          </p>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-brand-bg border-l-4 border-l-brand-blue border border-brand-line">
+          <h4 class="font-extrabold text-brand-navy text-base">3. Cierre inmediato del vivero FENOCO:</h4>
+          <p class="mt-1 leading-relaxed text-sm font-medium">
+            "FENOCO aportó el 100% de la infraestructura. Con un esfuerzo marginal (<strong>10 jornales y 120 kg de compost</strong>) entregamos la obra y activamos la comercialización de la Fase II (ICA)."
+          </p>
+        </div>
+
+      </div>
+
+      <div class="flex justify-end pt-3 border-t border-brand-line">
+        <button onclick="toggleDefenseModal()" class="px-5 py-2 rounded-xl bg-brand-blue hover:bg-brand-navy text-white font-bold text-sm font-mono transition-colors">
+          Cerrar Dictamen
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- LÓGICA JAVASCRIPT & CHARTS CON FUENTES AMPLIADAS               -->
+  <!-- ============================================================== -->
+  <script>
+    let activeSlide = 1;
+    let isDetailedLogro = false;
+    let chartKpisInstance = null;
+    let chartDonutInstance = null;
+    let chartLeverageInstance = null;
+    let chartSroiInstance = null;
+
+    const slideTitles = [
+      "Portada",
+      "KPIs de Formación",
+      "SROI & Finanzas",
+      "Proyecto FENOCO",
+      "Sabores que Inspira",
+      "Transformación Digital",
+      "Verse Bien",
+      "Convenio UniMagdalena",
+      "Matriz de Resoluciones",
+      "Cierre & Balance"
+    ];
+
+    // PLUGIN CUSTOM DE VALORES EN CHARTS
+    const valueLabelsPlugin = {
+      id: 'valueLabels',
+      afterDatasetsDraw(chart, args, opts) {
+        const { ctx } = chart;
+        const a = chart.chartArea;
+        if (!a || a.left >= a.right || a.top >= a.bottom) return;
+
+        if (opts.centerText && chart.config.type === 'doughnut') {
+          const cx = (a.left + a.right) / 2;
+          const cy = (a.top + a.bottom) / 2;
+          ctx.save();
+          ctx.font = '800 32px "JetBrains Mono", monospace';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.lineWidth = 5;
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.95)';
+          ctx.strokeText(opts.centerText, cx, cy);
+          ctx.fillStyle = '#0B2E59';
+          ctx.fillText(opts.centerText, cx, cy);
+          ctx.restore();
+          return;
+        }
+
+        const fmt = opts.format || ((v) => String(v));
+        chart.data.datasets.forEach((ds, i) => {
+          const meta = chart.getDatasetMeta(i);
+          if (!meta.data || !meta.data.length) return;
+          meta.data.forEach((el, idx) => {
+            if (el.hidden || el.skip) return;
+            const val = ds.data[idx];
+            if (val === null || val === undefined) return;
+            const text = fmt(val, ds, idx);
+            const pos = el.getCenterPoint();
+            ctx.save();
+            ctx.font = '700 15px "JetBrains Mono", monospace';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = 'rgba(11, 46, 89, 0.85)';
+            ctx.strokeText(text, pos.x, pos.y);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillText(text, pos.x, pos.y);
+            ctx.restore();
+          });
+        });
+      }
+    };
+    Chart.register(valueLabelsPlugin);
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initKpiChart();
+      initDonutChart();
+      initFinancialLeverageChart();
+      initSroiChart();
+      setupKeyboardControls();
+      goToSlide(1);
+    });
+
+    function goToSlide(slideIndex) {
+      if (slideIndex < 1) slideIndex = 1;
+      if (slideIndex > 10) slideIndex = 10;
+      activeSlide = slideIndex;
+
+      document.querySelectorAll('.slide-page').forEach((el, idx) => {
+        el.classList.remove('active');
+        if (idx + 1 === slideIndex) {
+          el.classList.add('active');
+        }
+      });
+
+      const currentBadge = document.getElementById('slideCurrentBadge');
+      const currentTitle = document.getElementById('slideCurrentTitle');
+      const footerInd = document.getElementById('pageIndicatorFooter');
+
+      const paddedNum = String(slideIndex).padStart(2, '0');
+      if (currentBadge) currentBadge.textContent = `${paddedNum} / 10`;
+      if (currentTitle) currentTitle.textContent = slideTitles[slideIndex - 1];
+      if (footerInd) footerInd.textContent = `${paddedNum} / 10`;
+
+      setTimeout(() => {
+        if (slideIndex === 2 && chartKpisInstance) chartKpisInstance.resize();
+        if (slideIndex === 3) {
+          if (chartLeverageInstance) chartLeverageInstance.resize();
+          if (chartSroiInstance) chartSroiInstance.resize();
+        }
+      }, 50);
+    }
+
+    function nextSlide() {
+      if (activeSlide < 10) goToSlide(activeSlide + 1);
+    }
+
+    function prevSlide() {
+      if (activeSlide > 1) goToSlide(activeSlide - 1);
+    }
+
+    function toggleIndexMenu() {
+      const dropdown = document.getElementById('indexDropdown');
+      if (dropdown) dropdown.classList.toggle('hidden');
+    }
+
+    function initKpiChart() {
+      const ctx = document.getElementById('chartKpis').getContext('2d');
+      chartKpisInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Meta Propia CFTE', 'Meta Convenio SENA', 'Logro Global (+700)'],
+          datasets: [{
+            label: 'Cupos Registrados',
+            data: [700, 250, 719],
+            backgroundColor: [
+              'rgba(82, 101, 122, 0.35)',
+              'rgba(61, 165, 217, 0.55)',
+              'rgba(0, 114, 206, 0.90)'
+            ],
+            borderColor: ['#52657A', '#3DA5D9', '#0072CE'],
+            borderWidth: 2,
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#0B2E59',
+              titleColor: '#FFFFFF',
+              bodyColor: '#FFFFFF',
+              borderColor: '#3DA5D9',
+              borderWidth: 1,
+              padding: 12,
+              titleFont: { size: 14, weight: 'bold' },
+              bodyFont: { size: 14 },
+              callbacks: {
+                label: (ctx) => ` ${ctx.parsed.y} Cupos`
+              }
+            },
+            valueLabels: {
+              format: (v) => v.toLocaleString('es-CO')
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 1650,
+              grid: { color: 'rgba(11, 46, 89, 0.08)' },
+              ticks: { color: '#52657A', font: { family: 'JetBrains Mono', size: 13, weight: 'bold' } }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { color: '#1F2D3D', font: { family: 'Source Sans 3', weight: '700', size: 14 } }
+            }
+          }
+        }
+      });
+    }
+
+    function toggleLogroDrilldown() {
+      isDetailedLogro = !isDetailedLogro;
+      const badge = document.getElementById('slide2Badge');
+      const btnText = document.getElementById('btnBreakdownText');
+      const btnIcon = document.getElementById('btnBreakdownIcon');
+
+      if (isDetailedLogro) {
+        chartKpisInstance.data.labels = ['Meta Propia', 'Meta Convenio', 'Titulada (85)', 'Complementaria (765)'];
+        chartKpisInstance.data.datasets[0].data = [1500, 250, 85, 765];
+        chartKpisInstance.data.datasets[0].backgroundColor = [
+          'rgba(82, 101, 122, 0.35)',
+          'rgba(61, 165, 217, 0.55)',
+          'rgba(0, 114, 206, 0.95)',
+          'rgba(76, 159, 56, 0.95)'
+        ];
+        chartKpisInstance.data.datasets[0].borderColor = ['#52657A', '#3DA5D9', '#0072CE', '#4C9F38'];
+        chartKpisInstance.update();
+
+        badge.innerText = "Desglose Activo: 85 / 765";
+        badge.className = "hidden sm:inline text-xs font-mono px-2.5 py-0.5 rounded bg-brand-skysoft text-brand-blue border border-brand-line animate-pulse font-extrabold";
+        btnText.innerText = "Revertir a Vista Global (+700)";
+        btnIcon.className = "fa-solid fa-compress text-sm";
+      } else {
+        chartKpisInstance.data.labels = ['Meta Propia CFTE', 'Meta Convenio SENA', 'Logro Global (+850)'];
+        chartKpisInstance.data.datasets[0].data = [1500, 250, 850];
+        chartKpisInstance.data.datasets[0].backgroundColor = [
+          'rgba(82, 101, 122, 0.35)',
+          'rgba(61, 165, 217, 0.55)',
+          'rgba(0, 114, 206, 0.90)'
+        ];
+        chartKpisInstance.data.datasets[0].borderColor = ['#52657A', '#3DA5D9', '#0072CE'];
+        chartKpisInstance.update();
+
+        badge.innerText = "Vista Agrupada (+700)";
+        badge.className = "hidden sm:inline text-xs font-mono px-2.5 py-0.5 rounded bg-brand-bg text-brand-soft border border-brand-line font-bold";
+        btnText.innerText = "Clic: Desglosar en Titulada (85) y Complementaria (765)";
+        btnIcon.className = "fa-solid fa-diagram-next text-sm";
+      }
+    }
+
+    function initDonutChart() {
+      const ctx = document.getElementById('chartDonutLogros').getContext('2d');
+      chartDonutInstance = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Titulada: 85 (10%)', 'Complementaria: 765 (90%)'],
+          datasets: [{
+            data: [85, 765],
+            backgroundColor: ['#0072CE', '#4C9F38'],
+            borderColor: '#FFFFFF',
+            borderWidth: 3,
+            hoverOffset: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '65%',
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { color: '#1F2D3D', font: { family: 'Source Sans 3', size: 14, weight: '700' }, boxWidth: 14 }
+            },
+            valueLabels: { centerText: '+700' }
+          }
+        }
+      });
+    }
+
+    function initFinancialLeverageChart() {
+      const ctx = document.getElementById('chartFinancialLeverage').getContext('2d');
+      chartLeverageInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['CFTE', 'Total Multiactor', 'Ahorro Social'],
+          datasets: [{
+            label: 'Monto Millones COP',
+            data: [180, 700, 2265],
+            backgroundColor: [
+              'rgba(0, 114, 206, 0.85)',
+              'rgba(61, 165, 217, 0.90)',
+              'rgba(76, 159, 56, 0.90)'
+            ],
+            borderColor: ['#0072CE', '#3DA5D9', '#4C9F38'],
+            borderWidth: 2,
+            borderRadius: 6
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#0B2E59',
+              titleColor: '#FFFFFF',
+              bodyColor: '#FFFFFF',
+              borderColor: '#3DA5D9',
+              borderWidth: 1,
+              padding: 12,
+              titleFont: { size: 14, weight: 'bold' },
+              bodyFont: { size: 14 },
+              callbacks: {
+                label: (ctx) => ` $${ctx.parsed.x.toLocaleString('es-CO')}M COP`
+              }
+            },
+            valueLabels: {
+              format: (v) => v >= 1000 ? '$' + v.toLocaleString('es-CO') + 'M' : '$' + v + 'M'
+            }
+          },
+          scales: {
+            x: {
+              grid: { color: 'rgba(11, 46, 89, 0.08)' },
+              ticks: { color: '#52657A', callback: (val) => '$' + val + 'M', font: { family: 'JetBrains Mono', size: 13, weight: 'bold' } }
+            },
+            y: {
+              grid: { display: false },
+              ticks: { color: '#1F2D3D', font: { weight: '700', size: 14 } }
+            }
+          }
+        }
+      });
+    }
+
+    function initSroiChart() {
+      const ctx = document.getElementById('chartSroiEvolution').getContext('2d');
+      chartSroiInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Año Anterior', 'Año Actual', 'Proyectado'],
+          datasets: [{
+            label: 'Ratio SROI',
+            data: [16.8, 14.7, 17],
+            backgroundColor: [
+              'rgba(82, 101, 122, 0.35)',
+              'rgba(76, 159, 56, 0.85)',
+              'rgba(0, 114, 206, 0.85)'
+            ],
+            borderColor: ['#52657A', '#4C9F38', '#0072CE'],
+            borderWidth: 2,
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#0B2E59',
+              titleColor: '#FFFFFF',
+              bodyColor: '#FFFFFF',
+              borderColor: '#3DA5D9',
+              borderWidth: 1,
+              padding: 12,
+              titleFont: { size: 14, weight: 'bold' },
+              bodyFont: { size: 14 },
+              callbacks: {
+                label: (ctx) => ` Retorno: ${ctx.parsed.y} : 1 COP`
+              }
+            },
+            valueLabels: { format: (v) => v + ' : 1' }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 11,
+              grid: { color: 'rgba(11, 46, 89, 0.08)' },
+              ticks: { color: '#52657A', callback: (val) => val + ' : 1', font: { family: 'JetBrains Mono', size: 13, weight: 'bold' } }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { color: '#1F2D3D', font: { size: 14, weight: '700' } }
+            }
+          }
+        }
+      });
+    }
+
+    function toggleDefenseModal() {
+      const modal = document.getElementById('defenseModal');
+      modal.classList.toggle('hidden');
+      modal.classList.toggle('flex');
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+      }
+    }
+
+    function setupKeyboardControls() {
+      document.addEventListener('keydown', (e) => {
+        if (e.key >= '1' && e.key <= '9') goToSlide(parseInt(e.key));
+        if (e.key === '0') goToSlide(10);
+        if (e.key === 'ArrowRight' || e.key === 'PageDown') nextSlide();
+        if (e.key === 'ArrowLeft' || e.key === 'PageUp') prevSlide();
+        if (e.key === 'Escape') {
+          const modal = document.getElementById('defenseModal');
+          if (!modal.classList.contains('hidden')) toggleDefenseModal();
+          const dropdown = document.getElementById('indexDropdown');
+          if (dropdown && !dropdown.classList.contains('hidden')) toggleIndexMenu();
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
